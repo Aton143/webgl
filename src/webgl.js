@@ -18,6 +18,8 @@ void main()
 
 function Main()
 {
+  const Arena  = ArenaCreate(1024);
+
   const Canvas    = document.querySelector("#glcanvas");
   const GLContext = Canvas.getContext("webgl");
 
@@ -94,6 +96,20 @@ function Main()
     GLContext.vertexAttribPointer(ShaderPositionLocation, 2, GLContext.FLOAT, false, 0, 0);
     GLContext.drawArrays(GLContext.TRIANGLES, 0, 3);
   }
+}
+
+function ArenaCreate(ByteCount)
+{
+  let Arena = {ByteCount: ByteCount, Position: 0, Memory: new ArrayBuffer(size)};
+  return(Arena);
+}
+
+function ArenaPush(Arena, ByteCount)
+{
+  ByteCount = Math.min(Arena.ByteCount - Arena.Position, ByteCount);
+  let Memory = new DataView(Arena.Memory, Arena.Position, ByteCount);
+  Arena.Position += ByteCount;
+  return(Memory);
 }
 
 Main();
